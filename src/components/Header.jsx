@@ -1,6 +1,7 @@
-import logo from "../assets/img/pizza-logo.svg"
 import React from "react"
 import Button from "./Button"
+
+import logo from "../assets/img/pizza-logo.svg"
 
 function Header() {
 	const onClickCart = () => {

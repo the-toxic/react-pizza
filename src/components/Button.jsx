@@ -4,18 +4,18 @@ import classNames from 'classnames'
 // class Button extends React.Component {
 //     render() { this.props... }
 // }
-const Button = props => {
+const Button = ({onClick, className, outline, children}) => {
 	return <button
-		onClick={props.onClick}
+		onClick={onClick}
 		className={
 			classNames(
 				'button',
-				props.className,
-				{'button--outline': props.outline}
+				className,
+				{'button--outline': outline}
 			)
 		}
 	>
-		{props.children}
+		{children}
 	</button>
 }
 export default Button
