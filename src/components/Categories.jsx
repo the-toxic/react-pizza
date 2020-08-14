@@ -1,6 +1,6 @@
 import React, {useState} from 'react'
 
-const Categories = ({items, onClickItem}) => {
+const Categories = ({items}) => {
 	const [activeIdx, setActiveIdx] = useState(null)
 
 	return (
