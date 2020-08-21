@@ -1,22 +1,27 @@
-import React, {useEffect, useState} from 'react'
+import React from 'react'
+import {useSelector, useDispatch} from "react-redux"
 import {Categories, SortPopup, Pizza} from '../components'
-import axios from "axios"
+import {setCategory} from "../redux/actions/filters"
+
+const categoriesList = ['Мясные','Вегетарианская','Гриль','Острые','Закрытые']
 
 const Home = () => {
-	const [pizzas, setPizzas] = useState([])
+	const pizzas = useSelector(({pizzas}) => pizzas.items)
+	const dispatch = useDispatch()
 
-	useEffect(() => {
-		async function fetchData() {
-			const response = await axios.get('/db.json')
-			setPizzas(response.data.pizzas)
-		}
-		fetchData()
-	}, [])
+	console.log('render Home', pizzas.length + ' pizzas')
+
+	const onSelectCategory = React.useCallback((idx) => {
+		dispatch(setCategory(idx))
+	}, [dispatch])
 
 	return (
 		<div className="container">
 			<div className="content__top">
-				<Categories onClickItem={name => console.log(name)} items={['Мясные','Вегетарианская','Гриль','Острые','Закрытые']} />
+				<Categories
+					onClickItem={onSelectCategory}
+					items={categoriesList} />
+
 				<SortPopup/>
 			</div>
 			<h2 className="content__title">Все пиццы</h2>

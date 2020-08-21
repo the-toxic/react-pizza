@@ -1,18 +1,28 @@
 import React, {useState, useEffect, useRef} from 'react'
 
-const SortPopup = () => {
-
+const SortPopup = React.memo(() => {
+	console.log('render sort')
 	const [visible, setVisible] = useState(false)
 	const toggleVisible = () => setVisible(!visible)
 	const [activeIdx, setActiveIdx] = useState(0)
 	const sortRef = useRef(null)
-	const items = ['популярности', 'цене', 'алфавиту']
-	const activeLabel = items[activeIdx]
+	const items = [
+		{name: 'популярности', type: 'popular'},
+		{name: 'цене', type: 'price'},
+		{name: 'алфавиту', type: 'alphabet'},
+	]
+	const activeLabel = items[activeIdx].name
 
-	useEffect(() => {
-		document.body.addEventListener('click', checkOutsideClick)
-	}, [])
 	const checkOutsideClick = (e) => !e.path.includes(sortRef.current) && setVisible(false)
+
+	useEffect(() => { // при загрузке компонента
+		document.body.addEventListener('click', checkOutsideClick) // вешаем слушателя
+
+		return () => { // при выгрузке
+			document.body.removeEventListener('click', checkOutsideClick) // удаляем слушателя
+		}
+	}, [])
+
 	const onSelectItem = (idx) => setActiveIdx(idx)
 
 	return (
@@ -25,7 +35,7 @@ const SortPopup = () => {
 			{visible && (
 				<div className="sort__popup" ref={sortRef}>
 					<ul>
-						{items && items.map((name, idx) =>
+						{items && items.map(({name}, idx) =>
 							<li key={idx}
 							    className={activeIdx === idx ? 'active' : ''}
 							    onClick={() => onSelectItem(idx)}
@@ -36,6 +46,6 @@ const SortPopup = () => {
 			)}
 		</div>
 	)
-}
+})
 
 export default SortPopup
